@@ -1,11 +1,15 @@
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f5f6fa;
-      color: #333;
-    }
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f6fa;
+  color: #333;
+  height: 100vh;             /* ✅ ให้สูงเท่ากับหน้าจอ */
+  overflow: hidden;          /* ✅ ปิด scroll */
+  display: flex;             /* ✅ ใช้ Flex */
+  flex-direction: column;    /* ✅ ให้เรียงแนวตั้ง */
+}
 header {
   display: flex;
   flex-direction: column;
