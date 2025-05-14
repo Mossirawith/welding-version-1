@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="utf-8"/>
+<title>ARC Welding Calculator</title>
+
+<link href="style.css" rel="stylesheet"/></head>
+<body>
+<header style="position: relative; display: flex; align-items: center; justify-content: center; padding: 20px 40px; max-width: 1000px; margin: 20px auto;">
+<!-- ปุ่ม 3 ขีดชิดซ้าย -->
+<div class="hamburger-menu" style="position: absolute; left: 20px; top: 20px;">
+<a href="index.html" style="text-decoration: none;" title="กลับหน้าแรก">
+<button id="menuToggle">◀</button>
+</a>
+</div>
+<!-- โลโก้และหัวข้ออยู่กึ่งกลาง -->
+<div style="display: flex; flex-direction: column; align-items: center;">
+<img alt="Koken Logo" src="kkt-01.png" style="height: 60px; margin-bottom: 2px;"/>
+<h1 style="font-size: 1.8em; color: #cf8413; margin: 0;">Welcome To Welding Calculator V.1</h1>
+</div>
+</header>
+<main>
+<!-- STEP 1 -->
+<section class="card-box">
+<h3>STEP 1 : เลือกลักษณะการเชื่อม</h3>
+<ul class="illustration-list" style="justify-content: center;">
+<li onclick="selectIllustration('ILL-01')">
+<img alt="ILL-01" src="ILL-01.png" style="width: 80px; height: auto; border-radius: 8px;"/>
+</li>
+<li onclick="selectIllustration('ILL-02')">
+<img alt="ILL-02" src="ILL-02.png" style="width: 80px; height: auto; border-radius: 8px;"/>
+</li>
+<li onclick="selectIllustration('ILL-03')">
+<img alt="ILL-03" src="ILL-03.png" style="width: 80px; height: auto; border-radius: 8px;"/>
+</li>
+<li onclick="selectIllustration('ILL-04')">
+<img alt="ILL-04" src="ILL-04.png" style="width: 80px; height: auto; border-radius: 8px;"/>
+</li>
+<li onclick="selectIllustration('ILL-05')">
+<img alt="ILL-05" src="ILL-05.png" style="width: 80px; height: auto; border-radius: 8px;"/>
+</li>
+<li onclick="selectIllustration('ILL-06')">
+<img alt="ILL-06" src="ILL-06.png" style="width: 80px; height: auto; border-radius: 8px;"/>
+</li>
+</ul>
+</section>
+<!-- STEP 2 -->
+<section class="card-box">
+<h3>STEP 2 : กรอกความหนา / ความยาว</h3>
+<div style="display: flex; justify-content: center; align-items: flex-start; gap: 40px; flex-wrap: wrap;">
+<!-- ซ้าย: กรอก Plate Thickness -->
+<div style="flex: 1; min-width: 250px; max-width: 300px;">
+<label for="thickness"><strong>Plate Thickness (t) [mm]</strong><br/>กรอกความหนา MAT ที่น้อยที่สุด:</label><br/>
+<input id="thickness" oninput="calculate()" placeholder="เช่น 5.0" step="0.01" style="width: 100%;" type="number"/>
+<br/><br/>
+<button onclick="saveData()">บันทึกข้อมูล</button>
+</div>
+<!-- ขวา: ตาราง L/d -->
+<div style="flex: 1; min-width: 250px; max-width: 300px;">
+<table style="width: 100%; border: 2px solid red; border-radius: 10px; box-shadow: 0 4px 12px rgba(255,0,0,0.2); overflow: hidden;">
+<thead style="background-color: red; color: white;">
+<tr>
+<th>📏 L (mm)</th>
+<th>📐 d (mm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<input id="manualL" oninput="calcManualD()" style="padding: 5px; border: 2px solid red; border-radius: 5px; width: 80px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);" type="number"/>
+</td>
+<td id="manualD" style="font-weight: bold;">-</td>
+</tr>
+</tbody>
+</table>
+<p style="font-size: 13px; color: #666; margin-top: 6px;">
+      * หมายเหตุ: กรอกความยาวรอยเชื่อม 
+    </p>
+</div>
+</div>
+</section>
+<!-- STEP 3 -->
+<section class="card-box">
+<h3>STEP 3 : แสดงผลลัพธ์</h3>
+<div style="text-align: center;">
+<img alt="Selected Illustration" id="illustrationImage" src=""/>
+</div>
+<table>
+<thead>
+<tr>
+<th>Plate Thickness (t) [mm]</th>
+<th>Fillet Leg Length (L)</th>
+<th>Penetration Depth (d)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td id="tVal">-</td>
+<td id="lVal">-</td>
+<td id="dVal">-</td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- Saved Data -->
+<div class="saved-data-card">
+<h2>📌 ข้อมูลที่บันทึกไว้</h2>
+<div class="download-section" style="text-align: center; margin-bottom: 20px;">
+<button class="download-btn" onclick="downloadPDF()">📄 PDF</button>
+<button class="download-btn" onclick="downloadExcel()">📊 Excel</button>
+<button class="download-btn" onclick="confirmClearData()" style="background-color: #e74c3c;">🗑️ ล้างข้อมูลทั้งหมด</button>
+</div>
+<table id="savedDataTable">
+<thead>
+<tr>
+<th>ลำดับ</th>
+<th>รูปภาพ</th>
+<th>Plate Thickness (t)</th>
+<th>Fillet Leg Length (L)</th>
+<th>Penetration Depth (d)</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+</main>
+<footer>
+  © 2025 ARC Welding Calculator. All rights reserved. Development By M&amp;K
+</footer>
+
+<script src="script.js"></script></body>
+</html>
