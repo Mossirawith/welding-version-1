@@ -204,16 +204,33 @@ function saveToLocalStorage(saved) {
 function reloadSavedTable() {
   const saved = JSON.parse(localStorage.getItem("savedWeldingData") || "[]");
   const table = document.getElementById("savedDataTable").getElementsByTagName("tbody")[0];
-  table.innerHTML = ""; // ล้างก่อน
-  saved.forEach((item, index) => {
-    const row = table.insertRow();
-    row.insertCell(0).textContent = index + 1;
-    row.insertCell(1).textContent = item.illustration;
-    row.insertCell(2).innerHTML = `<img src="${item.illustration}.png" alt="${item.illustration}" style="width: 80px; border-radius: 8px;">`;
-    row.insertCell(3).textContent = item.thickness;
-    row.insertCell(4).innerHTML = (item.l === "Not specified") ? `<span class="red-text">${item.l}</span>` : item.l;
-    row.insertCell(5).textContent = item.d;
+  table.innerHTML = "";
 
+  let displayIndex = 1;
+  let foundData = false;
+
+  saved.forEach((item, index) => {
+    foundData = true;
+    const row = table.insertRow();
+
+    // ลำดับ
+    row.insertCell(0).textContent = displayIndex++;
+
+    // รูปภาพอย่างเดียว
+    const imgCell = row.insertCell(1);
+    imgCell.innerHTML = `<img src="${item.illustration}.png" alt="Weld Image" style="width: 60px; display:block; margin:auto;">`;
+
+    // Plate Thickness
+    row.insertCell(2).textContent = item.thickness;
+
+    // Fillet Leg Length
+    const lCell = row.insertCell(3);
+    lCell.innerHTML = (item.l === "Not specified") ? `<span class="red-text">Not specified</span>` : item.l;
+
+    // Penetration Depth
+    row.insertCell(4).textContent = item.d;
+
+    // ปุ่มลบ
     const deleteBtn = document.createElement("button");
     deleteBtn.textContent = "ลบ";
     deleteBtn.style.backgroundColor = "#e74c3c";
@@ -224,12 +241,24 @@ function reloadSavedTable() {
     deleteBtn.style.cursor = "pointer";
     deleteBtn.onclick = () => {
       saved.splice(index, 1);
-  saveToLocalStorage(saved);
-  reloadSavedTable();
+      saveToLocalStorage(saved);
+      reloadSavedTable();
     };
-    row.insertCell(6).appendChild(deleteBtn);
+    row.insertCell(5).appendChild(deleteBtn);
   });
+
+  if (!foundData) {
+    const row = table.insertRow();
+    const cell = row.insertCell(0);
+    cell.colSpan = 6;
+    cell.textContent = "ไม่มีข้อมูลที่แสดงได้";
+    cell.style.color = "#888";
+    cell.style.padding = "20px";
+    cell.style.fontStyle = "italic";
+    cell.style.textAlign = "center";
+  }
 }
+
 function downloadPDF() {
   const table = document.getElementById("savedDataTable").outerHTML;
   const newWin = window.open("", "", "width=1000,height=700");
