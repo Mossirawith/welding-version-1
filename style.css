@@ -95,32 +95,33 @@ h2 {
   list-style: none;
   padding: 0;
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
 }
 
 .illustration-list li {
-  width: 60px;
-  height: 60px;
+  width: 55px;
+  height: 55px;
   padding: 4px;
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
   cursor: pointer;
-  background-color: #fff;
 }
 
 .illustration-list li img {
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   object-fit: contain;
-  border-radius: 6px;
   display: block;
-  margin: 0 auto;
+  border-radius: 4px;
 }
+
 
 .illustration-list li:hover {
   background-color: #ffe9c4;
